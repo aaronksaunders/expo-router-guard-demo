@@ -2,6 +2,10 @@ import { View, Text, Button } from "react-native";
 import { router, Stack } from "expo-router";
 import { useState } from "react";
 
+/**
+ * Login screen component for unauthenticated users.
+ * @returns {JSX.Element}
+ */
 export default function Login() {
   console.log("rendering login...");
   const [loading, setLoading] = useState(false);
