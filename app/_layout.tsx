@@ -1,36 +1,9 @@
 import React from "react";
 import { ActivityIndicator, View } from "react-native";
 import { Stack } from "expo-router";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import App from "../App";
-// If your version exposes Stack.Protected, use it:
-// const ProtectedStack: any = (Stack as any).Protected ?? React.Fragment;
-
-// Fake auth hook for demo
-/**
- * Custom hook to simulate authentication state.
- * Replace with your real authentication logic.
- * @returns {{ user: null | { name: string }, loading: boolean }}
- */
-function useAuth() {
-  // replace with your real auth logic
-  const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<null | { name: string; role: string }>(
-    null
-  ); // change to {} to simulate signed-in
-
-  // wait a bit to simulate loading, then return a user
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      setUser({ name: "Demo", role: "user" });
-      //setUser(null);
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  return { user, loading };
-}
+import { ConvexProvider } from "convex/react";
+import { convexClient } from "../config/convex";
+import { useAuth } from "../hooks/useAuth";
 
 /**
  * Suspense component shown while loading authentication state.
@@ -85,5 +58,9 @@ function AppLayout() {
  * @returns {JSX.Element}
  */
 export default function RootLayout() {
-  return <AppLayout />;
+  return (
+    <ConvexProvider client={convexClient}>
+      <AppLayout />
+    </ConvexProvider>
+  );
 }
