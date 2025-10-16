@@ -2,6 +2,8 @@
 
 This project demonstrates authentication and role-based route protection using the latest Expo Router features, including `Stack.Protected`.
 
+SEE VIDEO HERE - https://youtu.be/XzsQIOgKt9s
+
 ## Features
 
 - Expo Router navigation
