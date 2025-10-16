@@ -1,16 +1,71 @@
-import { Stack } from "expo-router";
-import { View, Text } from "react-native";
-/**
- * Home screen component for authenticated users.
- * @returns {JSX.Element}
- */
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
+import { useAuth } from "../../hooks/useAuth";
+
 export default function AdminHome() {
+  const { user } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error: any) {
+      console.error("Sign out error:", error);
+    }
+  };
+
   return (
-    <>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Admin Home</Text>
-        <Text>Only visible to ADMIN users</Text>
-      </View>
-    </>
+    <View style={styles.container}>
+      <Text style={styles.title}>Admin Home</Text>
+      <Text style={styles.subtitle}>Only visible to ADMIN users</Text>
+      
+      <Text style={styles.emailText}>
+        Signed in as: {user?.email}
+      </Text>
+      
+      <TouchableOpacity 
+        style={styles.signOutButton} 
+        onPress={handleSignOut}
+      >
+        <Text style={styles.signOutButtonText}>Sign Out</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
+  },
+  emailText: {
+    fontSize: 14,
+    color: "#333",
+    marginBottom: 30,
+  },
+  signOutButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#FF3B30",
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  signOutButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+});
