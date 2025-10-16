@@ -15,13 +15,15 @@ import App from "../App";
 function useAuth() {
   // replace with your real auth logic
   const [loading, setLoading] = React.useState(true);
-  const [user, setUser] = React.useState<null | { name: string }>(null); // change to {} to simulate signed-in
+  const [user, setUser] = React.useState<null | { name: string; role: string }>(
+    null
+  ); // change to {} to simulate signed-in
 
   // wait a bit to simulate loading, then return a user
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      setUser({ name: "Demo" });
-      // setUser(null);
+      setUser({ name: "Demo", role: "user" });
+      //setUser(null);
       setLoading(false);
     }, 800);
     return () => clearTimeout(timeout);
@@ -57,12 +59,23 @@ function AppLayout() {
 
   return (
     <Stack>
-      <Stack.Protected guard={user !== null}>
+      {/* admin app screens  */}
+      <Stack.Protected guard={user !== null && user.role === "admin"}>
+        <Stack.Screen name="(app)/admin" options={{ headerShown: false }} />
+      </Stack.Protected>
+
+      {/* app screens  */}
+      <Stack.Protected guard={user !== null && user.role !== "admin"}>
         <Stack.Screen name="(app)/index" options={{ headerShown: false }} />
       </Stack.Protected>
+
+      {/* auth screens  */}
       <Stack.Protected guard={user === null}>
         <Stack.Screen name="(auth)/index" options={{ headerShown: false }} />
       </Stack.Protected>
+
+      {/* about screen visible to all users  */}
+      <Stack.Screen name="(app)/about" options={{ headerShown: false }} />
     </Stack>
   );
 }

@@ -23,6 +23,13 @@ export default function Login() {
             }, 600);
           }}
         />
+
+        <Button
+          title="Go to About"
+          onPress={() => {
+            router.push("/(app)/about");
+          }}
+        />
       </View>
     </>
   );
